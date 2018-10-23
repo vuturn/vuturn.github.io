@@ -3,12 +3,17 @@
 
     <sitemap>
         <loc>https://vuturn.github.io/post-sitemap.xml</loc>
-        <lastmod>2018-10-19T06:03:07.400Z</lastmod>
+        <lastmod>2018-10-23T01:55:45.608Z</lastmod>
     </sitemap>
 
     <sitemap>
         <loc>https://vuturn.github.io/page-sitemap.xml</loc>
         <lastmod>2018-10-19T10:17:42.148Z</lastmod>
+    </sitemap>
+
+    <sitemap>
+        <loc>https://vuturn.github.io/tag-sitemap.xml</loc>
+        <lastmod>2018-10-23T01:55:45.608Z</lastmod>
     </sitemap>
 
 </sitemapindex>
