@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Archives - vuturn | Blog
+          flex学习心得 - vuturn | Blog
         
     </title>
 
-    <link rel="canonical" href="https://vuturn.github.io/archive/">
+    <link rel="canonical" href="https://vuturn.github.io/article/flex学习心得/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -69,8 +69,8 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/header_img/archive.jpg')
-            /*page*/
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
         
     }
     
@@ -83,10 +83,18 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
-                    <div class="site-heading">
-                        <h1>Archives</h1>
-                        <!--<hr class="small">-->
-                        <span class="subheading">Hey, this is archives</span>
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#CSS" title="CSS">CSS</a>
+                            
+                        </div>
+                        <h1>flex学习心得</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by vuturn on
+                            2018-11-08
+                        </span>
                     </div>
                 
 
@@ -189,204 +197,170 @@
 
 
     <!-- Main Content -->
-    <!-- Main Content -->
-<div class="container">
-    <div class="row">
-        
+    <!-- Modify by Yu-Hsuan Yen -->
 
-<!-- USE SIDEBAR -->
-    <!-- Post Container -->
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-            
-                
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <!-- 归档列表 -->
-            
-            
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-             <!-- 归档列表 -->
+                <p>之前对于flex的一些属性一直了解的不是很透彻，后来做项目，遇到了图片列表每行等高等长布局，就网上四处搜集资料，有了比较深入的一些了解。下面就讲解一下自己对于flex-grow,flex-basis以及flex-shrink的理解。</p>
+<hr>
+<h2><span id="flex-basis">flex-basis</span></h2>
+<blockquote>
+<p>(<strong>flex-basis</strong>)[<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-basis" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-basis</a>]指定了 flex 元素在主轴方向上的初始大小。如果不使用 box-sizing 来改变盒模型的话，那么这个属性就决定了 flex 元素的内容盒（content-box）的宽或者高（取决于主轴的方向）的尺寸大小</p>
+</blockquote>
+<p>该属性用来设置元素的宽度。如果与<code>width</code>属性同时存在，那么<code>flex-basis</code>会覆盖<code>width</code>的值。</p>
+<p><img src="/img/article/flex-basis.png" alt="flex-basis"></p>
+<h2><span id="flex-grow">flex-grow</span></h2>
+<blockquote>
+<p>(<strong>flex-grow</strong> )[<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-grow" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-grow</a>]  定义弹性盒子项（flex item）的拉伸因子。</p>
+</blockquote>
+<p>该属性用来设置，当父元素的宽度大于所有子元素的宽度之和时（即父元素会有剩余空间），子元素如何分配父元素的剩余空间。<br>
+<code>flex-grow</code>的默认值为0，意思是该元素不索取父元素的剩余空间，如果值大于0，表示索值。值越大，索取的越厉害。</p>
+<p>例如：<br>
+父元素宽400px，有两个元素：A和B。A宽为100px，B宽为200px，则剩余空间为 400 - (100 + 200) = 100px。</p>
+<p><img src="/img/article/flex-grow-none.png" alt="flex-grow-none"></p>
+<p>如果A和B都不设置<code>flex-grow</code>，不索取剩余空间，则有100px的剩余空间。<br>
+如果A设置<code>flex-grow</code>为1,B不索取。则A的大小为自身宽度 100 + 剩余空间（100） = 200。</p>
+<p><img src="/img/article/flex-grow-1.png" alt="flex-grow-1"></p>
+<p>如果A、B都设索取剩余空间，A设置<code>flex-grow</code>为1，B设置为<code>flex-grow</code>为2。则最终A的大小为自身宽度为 自身宽度（100）+  A获得的剩余空间的宽度（100p * 1/(1 + 2)）,最终B的大小为 200 + B获得的剩余空间的宽度（100 * (2/(1 + 2))）。</p>
+<h1><span id="flex-shrink">flex-shrink</span></h1>
+<blockquote>
+<p>(<strong>flex-shrink</strong>)[<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-shrink" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-shrink</a>] 指定了 flex 元素的收缩规则。flex 元素仅在默认宽度之和大于容器的时候才会发生收缩，其收缩的大小是依据 flex-shrink 的值。</p>
+</blockquote>
+<p>当父元素的宽度小于所有子元素的宽度的和时（即子元素会超出父元素），子元素如何缩小自己的宽度。</p>
+<p><code>flex-shrik</code>的默认值为1，当父元素的宽度小于所有子元素的宽度的和时，子元素的宽度会减小。值越大，减小的越厉害，如果值为0，表示不减小。</p>
+<p>举例：</p>
+<p>如果父元素400px，有两个元素：A和B。A为200px。B为300px。则A，B总共超出父元素的宽度为（200 + 300）- 400 = 100。</p>
+<p>如果A和B都不减小宽度，即都设置为flex-shrink为0，则会有100px的宽度超出父元素。</p>
+<p><img src="/img/article/flex-shrink-0.png" alt="flex-shrink-0"></p>
+<p>如果A不减小宽度，即设置flex-shrink为0，B减小，则B的大小为 自身宽度（300） - 总共超出父元素的宽度(100) = 200px。</p>
+<p><img src="/img/article/flex-shrink-1.png" alt="flex-shrink-1"></p>
+<p>如果A，B都减小。A设置flex-shrink  为3，B设置flex-shrink为2。则最终A的大小为自身宽度 200 - A减小的宽度(100 * ( 200* 3 /(200 * 3 + 300 * 2 ) )) = 150px。</p>
+<p><img src="/img/article/flex-shrink-3.jpg" alt="flex-shrink-3"></p>
+<hr>
+<h2><span id="图片流动布局">图片流动布局</span></h2>
+<p>(DEMO)[<a href="https://jsbin.com/tabewuqolo/edit?html,css,output" target="_blank" rel="noopener">https://jsbin.com/tabewuqolo/edit?html,css,output</a>]</p>
 
-            
-            <div class="one-tag-list">
-                <span class="fa fa-calendar-times-o listing-seperator" id="2018">
-                    <span class="tag-text">2018</span>
-                </span>
-                <ul>
                 
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    11-08
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/article/flex学习心得/" style="color: #0085a1">
-                        <span>
-                            flex学习心得
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    10-28
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/article/小韭菜的自我修养（一）/" style="color: #0085a1">
-                        <span>
-                            小韭菜的自我修养
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
-                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/小韭菜的自我修养（一）/" data-toggle="tooltip" data-placement="top" title="小韭菜的自我修养">Next Post &rarr;</a>
+                        </li>
+                    
                 </ul>
-            </div>
-            
-
-
-        </div>
-    </div>
-</div>
 
                 <br>
-
+                
                 <!-- require APlayer -->
                 
 
-                <!-- 如果开启评论功能 -->
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#CSS" title="CSS">CSS</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
                 
             </div>
-
-          <!-- Sidebar Container -->
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
-    
-        <!-- Featured Tags -->
-
-<section>
-    <!-- no hr -->
-    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-    <div class="tags">
-        
-            
-        
-            
-        
+        </div>
     </div>
-</section>
+</article>
 
-        <hr>
-    
-        <!-- Short About -->
-<section class="visible-md visible-lg">
-    <h5><a href="/about/">ABOUT ME</a></h5>
-    <div class="short-about">
 
-        
-            <img id = "avatar_pic" src="/img/avatar/beauty.png" />
-        
 
-        
-            <p>汝等且安坐，吾一人独秀</p>
-        
 
-        <!-- SNS Link -->
-        <ul class="list-inline">
-            
-            
-            
 
-            
 
-            
 
-            
-                <li>
-                    <a target="_blank"  href="https://github.com/vuturn">
-                        <span class="fa-stack fa-lg">
-                            <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </a>
-                </li>
-            
-            
-            
-            
-                <li>
-                    <a target="_blank"  href="https://www.linkedin.com/in/超-孔-b82906108">
-                        <span class="fa-stack fa-lg">
-                            <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
-</section>
 
-        <hr>
-    
-        
-  <h5>RECENT POSTS</h3>
-  <div class="widget">
-    <ul>
-      
-        <li>
-          <a href="/article/flex学习心得/">flex学习心得</a>
-        </li>
-      
-        <li>
-          <a href="/article/小韭菜的自我修养（一）/">小韭菜的自我修养</a>
-        </li>
-      
-    </ul>
-  </div>
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
-        <hr>
-    
-        <!-- Friends Blog -->
-
-<h5>FRIENDS</h5>
-<ul class="list-inline">
-
-    
-</ul>
-
-        <hr>
-    
-        
-    <h5>ARCHIVES</h5>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">1</span></li></ul>
-    </div>
-
-        <hr>
-    
-</div>
-
-        
-    </div>
-</div>
 
 
     <!-- Footer -->
