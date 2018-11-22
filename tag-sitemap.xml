@@ -2,13 +2,6 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <url>
-        <loc>https://vuturn.github.io/tags/%E7%90%86%E8%B4%A2/</loc>
-        <lastmod>2018-10-28T14:13:16.054Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://vuturn.github.io/tags/CSS/</loc>
         <lastmod>2018-11-08T03:47:55.398Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -18,6 +11,13 @@
     <url>
         <loc>https://vuturn.github.io/tags/%E7%BD%91%E7%BB%9C/</loc>
         <lastmod>2018-11-21T13:02:19.085Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vuturn.github.io/tags/%E7%90%86%E8%B4%A2/</loc>
+        <lastmod>2018-11-21T13:07:33.700Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
