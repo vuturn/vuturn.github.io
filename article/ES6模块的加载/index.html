@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          小韭菜的自我修养 - vuturn | Blog
+          ES6模块的加载 - vuturn | Blog
         
     </title>
 
-    <link rel="canonical" href="https://vuturn.github.io/article/小韭菜的自我修养（一）/">
+    <link rel="canonical" href="https://vuturn.github.io/article/ES6模块的加载/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -86,14 +86,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#理财" title="理财">理财</a>
+                              <a class="tag" href="/tags/#js" title="js">js</a>
                             
                         </div>
-                        <h1>小韭菜的自我修养</h1>
+                        <h1>ES6模块的加载</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by vuturn on
-                            2018-10-28
+                            2019-01-02
                         </span>
                     </div>
                 
@@ -210,68 +210,37 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>刚入股市的一颗小韭菜，最近在看格雷厄姆的《聪明的投资者》一书，做了一些摘抄和一点点的总结。以下很多（emmm，几乎大部分）都是摘抄过来的。。讲真的。让我连入门都不算的小韭菜写点投资心得与总结。。谁信啊。</p>
-<hr>
-<p>在《聪明的投资者》一书中，格雷厄姆把投资者分为两类：<strong>防御型投资者</strong>和<strong>进攻性投资者</strong>。</p>
-<h2><span id="防御型投资者">防御型投资者</span></h2>
-<p>格雷厄姆对于防御型投资者的定义为：</p>
-<blockquote>
-<p>防御型投资者的第一大目标是 <strong>避免重大亏损</strong> ，他最主要的精力当然都放在防守上；第二个目标是轻松自由，<strong>不需要经常分析决策</strong>，省时省事。</p>
-</blockquote>
-<p>他建议防御型投资者要遵循四大选股原则：</p>
+                <h1><span id="script-异步加载">script 异步加载</span></h1>
+<p>浏览器默认同步加载js脚本，即渲染引擎遇到<code>&lt;script&gt;</code>标签就会停下来，等到执行完脚本，再继续向下渲染，如果是外部脚本，还必须加入脚本下载时间。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"path/to/myModule.js"</span> <span class="attr">defer</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"path/to/myModule.js"</span> <span class="attr">async</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;script&gt;</code>标签打开 <code>defer</code>或者<code>aysnc</code>属性，脚本就会异步加载。渲染引擎遇到这一行命令，就会开始下载外部脚本，但不会等它下载和执行，而是直接执行后面的命令。<br>
+<code>defer</code>与<code>async</code>的区别</p>
 <ul>
-<li>适当分散投资10只到30只股票</li>
-<li>选股要选大型企业杰出企业、杰出企业、融资保守企业</li>
-<li>股息要持续发放20年以上</li>
-<li><strong>市盈率</strong>不超过25倍</li>
+<li><code>defer</code>要等到整个页面在内存中正常渲染结束（DOM结构完全生成，以及其他脚本执行完成），才会执行；<code>async</code>一旦下载完，渲染引擎就中断渲染，执行这个脚本以后再继续渲染。<code>defer</code>是渲染完再执行，<code>aysnc</code>是下载完就执行。</li>
+<li>如果有多个<code>defer</code>脚本，会按照它们在页面出现的顺序加载，而多个<code>aysnc</code>不能保证加载顺序</li>
 </ul>
-<p>这里引用一下来自百度百科关于<a href="https://baike.baidu.com/item/%E5%B8%82%E7%9B%88%E7%8E%87/90136?fr=aladdin" target="_blank" rel="noopener"><strong>市盈率</strong></a>的介绍</p>
-<blockquote>
-<p>市盈率（Price earnings ratio，即P/E ratio）也称“本益比”、“股价收益比率”或“市价盈利比率（简称市盈率）”。市盈率是最常用来评估股价水平是否合理的指标之一，由股价除以年度每股盈余（EPS）得出（以公司市值除以年度股东应占溢利亦可得出相同结果）。计算时，股价通常取最新收盘价，而EPS方面，若按已公布的上年度EPS计算，称为历史市盈率（historical P/E）；</p>
-<p><em>摘自百度百科</em></p>
-</blockquote>
-<p>例如：我们以腾讯的市盈率为例</p>
-<p><img src="/img/article/%E8%85%BE%E8%AE%AF%E5%B8%82%E7%9B%88%E7%8E%87.png" alt="腾讯市盈率"></p>
-<p>最新估计为33.12美元，每股收益为1.31，那么市盈率（静态）为 25.28 = 33.12 / 1.31.</p>
-<p>再看看中船科技的市盈率作为对比</p>
-<p><img src="/img/article/%E4%B8%AD%E8%88%B9%E7%A7%91%E6%8A%80%E5%B8%82%E7%9B%88%E7%8E%87.png" alt="中船科技市盈率"></p>
-<p>其每股收益为0.01元。估计为7.02 。那么其市盈率算出来应该是高达<strong>702</strong>。而这里却给出315.69的数值。这是为啥呢？</p>
-<p>因为这里算的是<strong>动态市盈率</strong>。</p>
-<blockquote>
-<p>市盈率分为静态市盈率与动态市盈率。动态市盈率的计算公式是以静态市盈率为基数，乘以动态系数。该系数为<br>
-$$<br>
-1÷(1+i)^n<br>
-$$<br>
-，其中i为企业每股收益的增长性比率，n为企业可持续发展的存续期。比如说，该企业未来保持该增长速度的时间可持续5年，即n=5，则动态系数为<br>
-$$<br>
-1÷(1+35%)^5=22%<br>
-$$<br>
-。相应地，动态市盈率为11.6倍，即：52（静态市盈率：20元÷0.38元=52）×22%。</p>
-<p><em>摘自百度百科</em></p>
-</blockquote>
-<p>悔不先看《聪明的投资者》，而盲目瞎投了严重高估的中船科技，算是一个伪军迷为智商充值吧。。如果能解套的话，我得赶紧抛。</p>
-<p>对于防御型投资者，<a href="https://baike.baidu.com/item/%E6%8C%87%E6%95%B0%E5%9E%8B%E5%9F%BA%E9%87%91/4157250?fr=aladdin" target="_blank" rel="noopener"><strong>指数基金</strong></a>或许是比较好的选择。</p>
-<blockquote>
-<p>指数基金(Index Fund)，顾名思义就是以特定指数（如沪深300指数、标普500指数、纳斯达克100指数、日经225指数等）为标的指数，并以该指数的成份股为投资对象，通过购买该指数的全部或部分成份股构建投资组合，以追踪标的指数表现的基金产品。</p>
-<p><em>摘自百度百科</em></p>
-</blockquote>
-<p>巴菲特用十年时间和百万美元打赌，结果他选择的指数基金大胜专家选择的对冲基金组合。</p>
-<blockquote>
-<p>最好的投资股票的方式是购买管理费很低的<strong>指数基金</strong>。通过投资指数基金，在扣除管理费和其他 费 用之后，所获得的净收益肯定超过绝大多数投资专家。</p>
-</blockquote>
-<h2><span id="进攻型投资者">进攻型投资者</span></h2>
-<blockquote>
-<p>进攻型（或者说积极型，进取型）投资者的最核心特征是，愿意花费大量时间和精力，选择比一般证券更加稳健可靠而且潜在回报更有吸引力的证券</p>
-</blockquote>
-<p>格雷厄姆认为采用技术分析及采用成长投资选股，都不可靠。其推荐了三种投资策略</p>
+<h1><span id="加载规则">加载规则</span></h1>
+<p>浏览器加载ES6模块，也使用<code>&lt;script&gt;</code>标签，但是要加入<code>type=&quot;module&quot;</code>属性。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"module"</span> <span class="attr">src</span>=<span class="string">"./foo.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>由于<code>type</code>属性为<code>module</code>,所以浏览器知道这是一个ES6模块。浏览器对于带有<code>type=&quot;module&quot;</code>的<code>&lt;script&gt;</code>，都异步加载，不会造成堵塞浏览器。等同于打开了<code>defer</code>属性。如果网页内有多个<code>&lt;script type=&quot;module&quot;&gt;&lt;/script&gt;</code>，它们会按照在页面出现的顺序依次执行。</p>
+<h1><span id="es6模块与commonjs的区别">ES6模块与CommonJS的区别</span></h1>
 <ul>
-<li>购买相对不受市场追捧的大公司股票</li>
-<li>买进被严重低估的便宜货股票</li>
-<li>特殊情况或者是“破产债务重组”股票套利</li>
+<li>CommonJS模块输出的是一个值的拷贝，ES6模块输出的是值的引用</li>
+<li>CommonJS是运行时加载，ES6模块是编译时输出接口</li>
 </ul>
-<p>那么乐视的情况个人感觉符合第一种<a href="%E5%85%88%E6%8C%82%E5%9C%A8%E8%BF%99%E3%80%82%E4%BB%A5%E5%90%8E%E6%91%B8%E9%80%8F%E4%BA%86%E5%86%8D%E6%94%B9%E3%80%82">^1</a>，</p>
-<p><img src="/img/article/%E4%B9%90%E8%A7%86.png" alt="乐视"></p>
-<p>先水这么多吧。。。</p>
+<blockquote>
+<p>第二个差异是因为CommonJS加载的是一个对象（<code>module.exports</code>），该对象只有在脚本运行完成是才会生成。ES6模块不是对象，它的对外接口是一种静态定义，在代码静态解析阶段就会生成。</p>
+</blockquote>
+<p>CommonJS输出的是值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。</p>
+<p>例如：模块文件<code>lib.js</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lib..js</span></span><br><span class="line"><span class="keyword">var</span> counter = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">incCounter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  counter++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  counter: counter,</span><br><span class="line">  incCounter: incCounter,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>输出内部变量<code>counter</code>和改写这个变量的内部方法<code>incCounter</code>。然后，在<code>main.js</code>里加载这个模块。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mode = <span class="built_in">require</span>(<span class="string">'./lib'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(mod.counter); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">mod.mod.incCounter();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(mod.counter); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<p>也就是说，<code>lib.js</code>模块加载完成之后，它的内部变化就影响不到输出的 <code>mod.counter</code>了。这是因为<code>mod.counter</code>是一个原始类型的值，会被缓存。除非写成一个函数，才能得到内部变动后的值。</p>
+<blockquote>
+<p>ES6模块的运行机制与CommonJS不一样。JS 引擎对脚本静态分析的时候，遇到模块加载命令<code>import</code>，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载 的那个模块里面去取值。因此，ES6模块时动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// lib.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> counter = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">incCounter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  counter++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; counter, incCounter &#125; <span class="keyword">from</span> <span class="string">'./lib'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(counter); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">incCounter();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(counter); <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
 
                 
 
@@ -279,10 +248,10 @@ $$<br>
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/flex学习心得/" data-toggle="tooltip" data-placement="top" title="flex学习心得">&larr; Previous Post</a>
-                        </li>
                     
+                        <li class="next">
+                            <a href="/article/ES6中的export/" data-toggle="tooltip" data-placement="top" title="ES6中的export">Next Post &rarr;</a>
+                        </li>
                     
                 </ul>
 
@@ -324,7 +293,7 @@ $$<br>
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#理财" title="理财">理财</a>
+                          <a class="tag" href="/tags/#js" title="js">js</a>
                         
                     </div>
                 </section>
