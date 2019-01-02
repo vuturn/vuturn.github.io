@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          ES6模块的加载 - vuturn | Blog
+          第一个C程序 - vuturn | Blog
         
     </title>
 
-    <link rel="canonical" href="https://vuturn.github.io/article/ES6模块的加载/">
+    <link rel="canonical" href="https://vuturn.github.io/article/第一个C程序/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -86,10 +86,10 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#js" title="js">js</a>
+                              <a class="tag" href="/tags/#C语言" title="C语言">C语言</a>
                             
                         </div>
-                        <h1>ES6模块的加载</h1>
+                        <h1>第一个C程序</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by vuturn on
@@ -210,37 +210,79 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1><span id="script-异步加载">script 异步加载</span></h1>
-<p>浏览器默认同步加载js脚本，即渲染引擎遇到<code>&lt;script&gt;</code>标签就会停下来，等到执行完脚本，再继续向下渲染，如果是外部脚本，还必须加入脚本下载时间。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"path/to/myModule.js"</span> <span class="attr">defer</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"path/to/myModule.js"</span> <span class="attr">async</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><code>&lt;script&gt;</code>标签打开 <code>defer</code>或者<code>aysnc</code>属性，脚本就会异步加载。渲染引擎遇到这一行命令，就会开始下载外部脚本，但不会等它下载和执行，而是直接执行后面的命令。<br>
-<code>defer</code>与<code>async</code>的区别</p>
+                <h1><span id="前言">前言</span></h1>
+<p>前面已经唠叨了这么多理论知识，从这讲开始，就要通过接触代码来学习C语言的语法。学习任何一门语言，首先要掌握的肯定是语法。学习C语言语法的目的：就是能够利用C语言编写程序，然后运行程序跟硬件（计算机、手机等硬件设备）进行交互。</p>
+<h1><span id="编写第一个c语言程序-hello-world">编写第一个C语言程序  - Hello World</span></h1>
+<p>为什么称第一个程序为“Hello Wolrd”呢？其实计算机行业里面，学习任何技术的第一个程序都可以称为“Hello World”。“Hello World”的字面意思是“你好，世界”，也就是跟世界打招呼。我们第一个程序在这世界上诞生了，那肯定要跟世界打声招呼嘛，所以就称为“Hello World”。</p>
+<h2><span id="用什么工具写代码">用什么工具写代码</span></h2>
+<p>首先我们要做的肯定是写代码，在代码里面说清楚想要计算机做出怎样的操作。其实写代码就像平时写文章一样，只是在电脑上写一些文本内容，那用什么工具来写代码么？平时我们在Windows中写文章，可以用记事本、Word等文本编辑工具。当然，在实际开发中，为了提高开发效率，一般会使用开发工具。不过呢，开发工具屏蔽了很多操作细节和语法细节，不利于初学者直观、系统地学习一门语言。因此，在这里，我们暂时使用文本编辑工具UltraEdit来写C语言代码。</p>
+<h2><span id="写代码">写代码</span></h2>
+<h3><span id="c程序由函数构成">C程序由函数构成</span></h3>
+<p>写代码之前，你首先要知道：任何一个C语言程序都是由一个或者多个程序段（小程序）构成的，每个程序段都有自己的功能，我们一般称这些程序段为“函数”。所以，你可以说C语言程序是由函数构成的。</p>
+<p>比如你用C语言编写了一个视频播放器程序，那么它的程序结构如下图所示：</p>
+<p><img src="/img/article/MP4.png" alt="MP4"></p>
 <ul>
-<li><code>defer</code>要等到整个页面在内存中正常渲染结束（DOM结构完全生成，以及其他脚本执行完成），才会执行；<code>async</code>一旦下载完，渲染引擎就中断渲染，执行这个脚本以后再继续渲染。<code>defer</code>是渲染完再执行，<code>aysnc</code>是下载完就执行。</li>
-<li>如果有多个<code>defer</code>脚本，会按照它们在页面出现的顺序加载，而多个<code>aysnc</code>不能保证加载顺序</li>
+<li>从上图可以看出：函数就是用来实现某个功能的程序段，每一个函数都有自己的功能。因此，你应该把实现某个功能所需的代码都写在函数中。比如，有个函数的功能是播放视频，那么播放视频的代码都应该写到这个函数中。</li>
+<li>当调用（执行）一个函数时，计算机就会按顺序执行函数中的所有代码，从而展示函数所实现的功能。</li>
+<li>一般来说，我们会将不同的功能交给不同的函数去实现。比如，将暂停播放视频的代码写到一个函数中，将停止播放视频的代码写到另一个函数中。因此，一个C程序中可能会有很多的函数。</li>
 </ul>
-<h1><span id="加载规则">加载规则</span></h1>
-<p>浏览器加载ES6模块，也使用<code>&lt;script&gt;</code>标签，但是要加入<code>type=&quot;module&quot;</code>属性。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"module"</span> <span class="attr">src</span>=<span class="string">"./foo.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>由于<code>type</code>属性为<code>module</code>,所以浏览器知道这是一个ES6模块。浏览器对于带有<code>type=&quot;module&quot;</code>的<code>&lt;script&gt;</code>，都异步加载，不会造成堵塞浏览器。等同于打开了<code>defer</code>属性。如果网页内有多个<code>&lt;script type=&quot;module&quot;&gt;&lt;/script&gt;</code>，它们会按照在页面出现的顺序依次执行。</p>
-<h1><span id="es6模块与commonjs的区别">ES6模块与CommonJS的区别</span></h1>
+<h3><span id="c程序的入口">C程序的入口</span></h3>
+<p>前面说到：一个C程序中可能会有很多的函数，这样就会有个疑问：当我们运行整个程序时，在众多函数中，计算机会先执行哪个函数呢？也就是说，一个C程序的入口在哪里？我写了几千行的代码，应该先从哪一行代码开始执行啊？是从第一行代码还是从最后一行代码开始执行啊？</p>
+<p>其实，C程序的入口是一个名字叫做main的函数，简称main函数。（为了区分函数，每一个函数都有一个名称）也就是说，不管整个程序中有多少个函数，都是先执行main函数。不管main函数写在文件中间，还是文件末尾，也都是先执行main函数。</p>
+<p>需要注意的是：</p>
 <ul>
-<li>CommonJS模块输出的是一个值的拷贝，ES6模块输出的是值的引用</li>
-<li>CommonJS是运行时加载，ES6模块是编译时输出接口</li>
+<li>如果一个C程序中没有main函数，那么这个程序就不具备运行的能力。连程序的入口都没有，还运行什么？</li>
+<li>一个C程序中只能有一个main函数。想象一下也知道，如果有多个main函数，究竟先执行哪一个main函数呢？这会让计算机无法选择</li>
 </ul>
+<h3><span id="编写main函数">编写main函数</span></h3>
+<p>现在已经知道，要想运行一个C程序，必须有一个main函数，接下来就在文本编辑工具中编写一个main函数。main函数的格式大致如下：</p>
+<p><img src="/img/article/main.png" alt=""></p>
+<ul>
+<li>第1行的int暂时不用去理解，先认为是main函数的固定写法</li>
+<li>第1行的main是函数名称，main后面的一对小括号()是函数的标志，绝对不能缺少！而且这对小括号是“英文括号()”，不是“中文括号（）”！</li>
+<li>第2行开始，有一对大括号{}，函数内部的代码都要写到这对大括号里面。每一个函数都有一对{}，{}里面的内容可以称为“函数体”。</li>
+<li>在第3行添加了一行return 0;，暂时不用理解它的意思，先认为是main函数的固定写法。</li>
+<li>像第3行这种写在函数中的代码可以称为一条“语句”。写完一条语句后，要在尾部加上一个分号“;”，代表语句结束了</li>
+</ul>
+<h3><span id="编写输出语句">编写输出语句</span></h3>
+<p>接下来在main函数中添加代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Hello World\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在第5行添加了一条语句printf(“Hello World\n”);，这条语句的作用是让计算机在屏幕上输出用双引号&quot;“括住的内容：Hello World，后面的”\n&quot;是一个转义字符，表示回车换行，因此，输出Hello Wrold这一串内容后会自动换行。至于为什么这条语句要这样写？为什么这条语句能让计算机输出东西？这些疑问都先搁着，以后会详细解释。</li>
+<li>为了保证第5行代码的正常使用，就在main函数的前面加了一行代码#include &lt;stdio.h&gt;，暂时不用去深刻了解它的意思，默默加上即可，注意，这里是不用加上分号&quot;;&quot;的</li>
+<li>当运行这个程序，就会先执行main函数，接着就会按顺序执行main函数大括号{}中的所有语句（第5行、第6行语句）</li>
+<li>需要注意的是：main函数中所有语句都必须写在第6行return 0;语句的前面，先别问为什么，以后会详细介绍</li>
+</ul>
+<h3><span id="保存为c程序的源文件">保存为C程序的源文件</span></h3>
+<p>代码写完了，总得保存起来吧，保存为什么格式的文件呢？每个文件都有自己的拓展名，不同的拓展名就代表着不同类型的文件，比如.mp4代表着视频文件，.txt代表着文本文件。我们前面编写的C语言代码，应该保存为一个拓展名为.c的文件，这个.c文件称为C语言程序的“源代码文件”，也称为“源文件”。</p>
+<h2><span id="编译程序">编译程序</span></h2>
+<p>前面已经把程序写好了，迫不及待想做的事情肯定是运行程序，看看计算机会有什么反应。遗憾的是，前面编写好的one.c文件还不能够运行。计算机只能识别0和1组成的机器指令，你现在写的这些什么int、main这些英文，它是看不懂的。我们需要使用C语言编译器，将源文件翻译成只有0和1的二进制文件，这个翻译过程，我们称之为“编译”。</p>
+<h3><span id="打开终端dev-c">打开终端（Dev-C ++）</span></h3>
+<p><img src="/img/article/dev-c++.png" alt=""></p>
+<h3><span id="在编译器中打开hellowordc文件">在编译器中打开HelloWord.c文件</span></h3>
 <blockquote>
-<p>第二个差异是因为CommonJS加载的是一个对象（<code>module.exports</code>），该对象只有在脚本运行完成是才会生成。ES6模块不是对象，它的对外接口是一种静态定义，在代码静态解析阶段就会生成。</p>
+<p>file -&gt; open -&gt; HelloWorld.c</p>
 </blockquote>
-<p>CommonJS输出的是值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。</p>
-<p>例如：模块文件<code>lib.js</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lib..js</span></span><br><span class="line"><span class="keyword">var</span> counter = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">incCounter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  counter++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  counter: counter,</span><br><span class="line">  incCounter: incCounter,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>输出内部变量<code>counter</code>和改写这个变量的内部方法<code>incCounter</code>。然后，在<code>main.js</code>里加载这个模块。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mode = <span class="built_in">require</span>(<span class="string">'./lib'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(mod.counter); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">mod.mod.incCounter();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(mod.counter); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
-<p>也就是说，<code>lib.js</code>模块加载完成之后，它的内部变化就影响不到输出的 <code>mod.counter</code>了。这是因为<code>mod.counter</code>是一个原始类型的值，会被缓存。除非写成一个函数，才能得到内部变动后的值。</p>
+<p><img src="/img/article/dev-open-file.jpg" alt="1546430193327"></p>
+<h3><span id="编译-amp-运行">编译 &amp; 运行</span></h3>
 <blockquote>
-<p>ES6模块的运行机制与CommonJS不一样。JS 引擎对脚本静态分析的时候，遇到模块加载命令<code>import</code>，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载 的那个模块里面去取值。因此，ES6模块时动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。</p>
+<p>Exexute -&gt; run</p>
 </blockquote>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// lib.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> counter = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">incCounter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  counter++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; counter, incCounter &#125; <span class="keyword">from</span> <span class="string">'./lib'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(counter); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">incCounter();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(counter); <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/article/dev-run.jpg" alt=""></p>
+<p>运行结果：</p>
+<p><img src="/img/article/hello-exe.jpg" alt=""></p>
+<h3><span id="生产可执行文件">生产可执行文件</span></h3>
+<p><img src="/img/article/%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6.png" alt=""></p>
+<h3><span id="语法校验">语法校验</span></h3>
+<p>编译器除了能将.c源文件编译成.o目标文件之外，还有一个非常重要的功能：语法检测。跟英语一样，C语言也有自己的语法，如果你不按照C语言语法去写代码，那就无法编译成功。生成目标文件之前，编译器会先检查.c文件是否有语法错误，如果出现语法错误，会列出错误的总个数、错误原因和错误代码的行号，这时候就不会产生目标文件；必须修正相应的语法错误，重新编译成功后，才会生成目标文件。</p>
+<p>接下来我把代码故意写错，第3行把int写成了intt，第5行语句少了一个分号&quot;;&quot;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">intt <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Hello World\n"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再执行编译</p>
+<blockquote>
+<p>Exexute -&gt; compile</p>
+</blockquote>
+<p><img src="/img/article/error.png" alt=""></p>
+<p>这些错误信息（error）是一定要修改的，只要有一个错误信息存在，就不可能编译成功。以后还有可能会遇到一些“警告信息（warning）”，警告信息可以忽略，不影响编译。</p>
 
                 
 
@@ -248,13 +290,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/第一个C程序/" data-toggle="tooltip" data-placement="top" title="第一个C程序">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/ES6中的export/" data-toggle="tooltip" data-placement="top" title="ES6中的export">Next Post &rarr;</a>
+                            <a href="/article/ES6模块的加载/" data-toggle="tooltip" data-placement="top" title="ES6模块的加载">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -297,7 +335,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#js" title="js">js</a>
+                          <a class="tag" href="/tags/#C语言" title="C语言">C语言</a>
                         
                     </div>
                 </section>

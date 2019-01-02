@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://vuturn.github.io/article/%E7%AC%AC%E4%B8%80%E4%B8%AAC%E7%A8%8B%E5%BA%8F/</loc>
+        <lastmod>2019-01-02T13:16:18.912Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://vuturn.github.io/article/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%8A%A0%E8%BD%BD/</loc>
         <lastmod>2019-01-02T02:57:48.574Z</lastmod>
         <changefreq>weekly</changefreq>
