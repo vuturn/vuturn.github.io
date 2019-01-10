@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          小韭菜的自我修养 - vuturn | Blog
+          浏览器的缓存机制 - vuturn | Blog
         
     </title>
 
-    <link rel="canonical" href="https://vuturn.github.io/article/小韭菜的自我修养（一）/">
+    <link rel="canonical" href="https://vuturn.github.io/article/浏览器缓存机制/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -86,14 +86,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#理财" title="理财">理财</a>
+                              <a class="tag" href="/tags/#网络" title="网络">网络</a>
                             
                         </div>
-                        <h1>小韭菜的自我修养</h1>
+                        <h1>浏览器的缓存机制</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by vuturn on
-                            2018-10-28
+                            2019-01-10
                         </span>
                     </div>
                 
@@ -210,68 +210,87 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>刚入股市的一颗小韭菜，最近在看格雷厄姆的《聪明的投资者》一书，做了一些摘抄和一点点的总结。以下很多（emmm，几乎大部分）都是摘抄过来的。。讲真的。让我连入门都不算的小韭菜写点投资心得与总结。。谁信啊。</p>
-<hr>
-<p>在《聪明的投资者》一书中，格雷厄姆把投资者分为两类：<strong>防御型投资者</strong>和<strong>进攻性投资者</strong>。</p>
-<h2><span id="防御型投资者">防御型投资者</span></h2>
-<p>格雷厄姆对于防御型投资者的定义为：</p>
-<blockquote>
-<p>防御型投资者的第一大目标是 <strong>避免重大亏损</strong> ，他最主要的精力当然都放在防守上；第二个目标是轻松自由，<strong>不需要经常分析决策</strong>，省时省事。</p>
+                <blockquote>
+<p>原文地址 ： <a href="https://mp.weixin.qq.com/s/d2zeGhUptGUGJpB5xHQbOA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/d2zeGhUptGUGJpB5xHQbOA</a></p>
 </blockquote>
-<p>他建议防御型投资者要遵循四大选股原则：</p>
+<p>浏览器缓存也就是HTTP缓存，其机制是根据HTTP报文的缓存标识进行的。所以，分析浏览器缓存机制之前，需要介绍一下HTTP报文，HTTP报文分为两种：</p>
+<p>HTTP请求（Request）报文，报文格式：</p>
+<blockquote>
+<p>请求行  - HTTP头 （通用信息头，请求头，实体头）  - 请求报文主体 （只有POST才有报文主体）</p>
+</blockquote>
+<p>如下图：</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5Crequest-header.png" alt=""></p>
+<p>HTTP响应（Response）报文，报文格式：</p>
+<blockquote>
+<p>状态行 - HTTP头（通用信息头，响应头，实体头） - 响应报文主体</p>
+</blockquote>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5Cresponse-header.png" alt=""></p>
+<blockquote>
+<p>通用信息头指的是请求和响应报文都支持的头域，分别为Cache-Control,Connection、Date、Pragma、Transfer-Encoding、Upgrade、Via；</p>
+<p>实体头则是实体信息的实体头域，分别为Allow，Content-Base、Content-Encoding、Content-Language、Content-Length、Content-Location、Content-MD5、Content-Range，Content-type、Etag、Expires、Last-Modiied。</p>
+</blockquote>
+<h1><span id="缓存过程分析">缓存过程分析</span></h1>
+<p>浏览器与服务器通信的形式为应答模式，即是：浏览器发起HTTP请求 - 服务器响应该请求。那么浏览器第一次向服务器发起该请求后拿到结果，会根据响应报文中的HTTP头的缓存标识，决定是否缓存结果，是则将请求结果和缓存标识存入浏览器缓存中，简单过程如下图：</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5C%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%8F%91%E8%B5%B7HTTP%E8%AF%B7%E6%B1%82.png" alt=""></p>
+<p>由上图我们可以知道：</p>
 <ul>
-<li>适当分散投资10只到30只股票</li>
-<li>选股要选大型企业杰出企业、杰出企业、融资保守企业</li>
-<li>股息要持续发放20年以上</li>
-<li><strong>市盈率</strong>不超过25倍</li>
+<li>浏览器每次发起请求，都会在浏览器缓存中查找请求该请求的结果以及缓存标识</li>
+<li>浏览器每次拿到返回的请求结果，都会将该结果和缓存标识存入浏览器缓存中</li>
 </ul>
-<p>这里引用一下来自百度百科关于<a href="https://baike.baidu.com/item/%E5%B8%82%E7%9B%88%E7%8E%87/90136?fr=aladdin" target="_blank" rel="noopener"><strong>市盈率</strong></a>的介绍</p>
+<p>以上两点结论就是浏览器缓存的关键，它确保了每个请求的缓存存入与读取。根据是否需要向服务器重新发起HTTP请求将缓存分为两个部分，分别是强制缓存和协商缓存。</p>
+<h2><span id="强制缓存">强制缓存</span></h2>
 <blockquote>
-<p>市盈率（Price earnings ratio，即P/E ratio）也称“本益比”、“股价收益比率”或“市价盈利比率（简称市盈率）”。市盈率是最常用来评估股价水平是否合理的指标之一，由股价除以年度每股盈余（EPS）得出（以公司市值除以年度股东应占溢利亦可得出相同结果）。计算时，股价通常取最新收盘价，而EPS方面，若按已公布的上年度EPS计算，称为历史市盈率（historical P/E）；</p>
-<p><em>摘自百度百科</em></p>
+<p>强制缓存就是向浏览器缓存查找该请求结果，并根据该结果的缓存规则来决定是否需要使用该缓存结果的过程，强制缓存的情况有三种（暂不考虑协商缓存过程）</p>
 </blockquote>
-<p>例如：我们以腾讯的市盈率为例</p>
-<p><img src="/img/article/%E8%85%BE%E8%AE%AF%E5%B8%82%E7%9B%88%E7%8E%87.png" alt="腾讯市盈率"></p>
-<p>最新估计为33.12美元，每股收益为1.31，那么市盈率（静态）为 25.28 = 33.12 / 1.31.</p>
-<p>再看看中船科技的市盈率作为对比</p>
-<p><img src="/img/article/%E4%B8%AD%E8%88%B9%E7%A7%91%E6%8A%80%E5%B8%82%E7%9B%88%E7%8E%87.png" alt="中船科技市盈率"></p>
-<p>其每股收益为0.01元。估计为7.02 。那么其市盈率算出来应该是高达<strong>702</strong>。而这里却给出315.69的数值。这是为啥呢？</p>
-<p>因为这里算的是<strong>动态市盈率</strong>。</p>
-<blockquote>
-<p>市盈率分为静态市盈率与动态市盈率。动态市盈率的计算公式是以静态市盈率为基数，乘以动态系数。该系数为<br>
-$$<br>
-1÷(1+i)^n<br>
-$$<br>
-，其中i为企业每股收益的增长性比率，n为企业可持续发展的存续期。比如说，该企业未来保持该增长速度的时间可持续5年，即n=5，则动态系数为<br>
-$$<br>
-1÷(1+35%)^5=22%<br>
-$$<br>
-。相应地，动态市盈率为11.6倍，即：52（静态市盈率：20元÷0.38元=52）×22%。</p>
-<p><em>摘自百度百科</em></p>
-</blockquote>
-<p>悔不先看《聪明的投资者》，而盲目瞎投了严重高估的中船科技，算是一个伪军迷为智商充值吧。。如果能解套的话，我得赶紧抛。</p>
-<p>对于防御型投资者，<a href="https://baike.baidu.com/item/%E6%8C%87%E6%95%B0%E5%9E%8B%E5%9F%BA%E9%87%91/4157250?fr=aladdin" target="_blank" rel="noopener"><strong>指数基金</strong></a>或许是比较好的选择。</p>
-<blockquote>
-<p>指数基金(Index Fund)，顾名思义就是以特定指数（如沪深300指数、标普500指数、纳斯达克100指数、日经225指数等）为标的指数，并以该指数的成份股为投资对象，通过购买该指数的全部或部分成份股构建投资组合，以追踪标的指数表现的基金产品。</p>
-<p><em>摘自百度百科</em></p>
-</blockquote>
-<p>巴菲特用十年时间和百万美元打赌，结果他选择的指数基金大胜专家选择的对冲基金组合。</p>
-<blockquote>
-<p>最好的投资股票的方式是购买管理费很低的<strong>指数基金</strong>。通过投资指数基金，在扣除管理费和其他 费 用之后，所获得的净收益肯定超过绝大多数投资专家。</p>
-</blockquote>
-<h2><span id="进攻型投资者">进攻型投资者</span></h2>
-<blockquote>
-<p>进攻型（或者说积极型，进取型）投资者的最核心特征是，愿意花费大量时间和精力，选择比一般证券更加稳健可靠而且潜在回报更有吸引力的证券</p>
-</blockquote>
-<p>格雷厄姆认为采用技术分析及采用成长投资选股，都不可靠。其推荐了三种投资策略</p>
 <ul>
-<li>购买相对不受市场追捧的大公司股票</li>
-<li>买进被严重低估的便宜货股票</li>
-<li>特殊情况或者是“破产债务重组”股票套利</li>
+<li>不存在该缓存结果和缓存标识，强制缓存失效，则直接向服务器发起请求（跟第一次发起请求一致），如下图</li>
 </ul>
-<p>那么乐视的情况个人感觉符合第一种<a href="%E5%85%88%E6%8C%82%E5%9C%A8%E8%BF%99%E3%80%82%E4%BB%A5%E5%90%8E%E6%91%B8%E9%80%8F%E4%BA%86%E5%86%8D%E6%94%B9%E3%80%82">^1</a>，</p>
-<p><img src="/img/article/%E4%B9%90%E8%A7%86.png" alt="乐视"></p>
-<p>先水这么多吧。。。</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5C%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E5%A4%B1%E6%95%88.png" alt=""></p>
+<ul>
+<li>存在该缓存结果和缓存标识，但该结果已失效，强制缓存失效，则使用协商缓存（暂不分析），如下图</li>
+</ul>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5C%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98.png" alt=""></p>
+<ul>
+<li>存在该缓存结果和缓存标识，且该结果尚未失效，强制缓存生效，直接返回该结果，如下图</li>
+</ul>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5C%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E7%94%9F%E6%95%88.png" alt=""></p>
+<blockquote>
+<p>那么强制缓存规则是什么？</p>
+<p>当浏览器向服务器发起请求时，服务器会将缓存规则放入HTTP响应报文的HTTP头中和请求结果一起返回给浏览器，控制强制缓存的字段是Expires 和 Cache-Control，其中Cache-Control优先级比Expires要高</p>
+</blockquote>
+<h2><span id="expires">Expires</span></h2>
+<blockquote>
+<p>Expires 是HTTP/1.0 控制网页缓存的字段，其值为服务器返回该请求结果缓存的到期时间，即再次发起该请求时，如果客户端的时间小于Expires的值时，直接使用缓存结果。</p>
+</blockquote>
+<p><strong>Expires是HTTP/1.0的字段，但是现在浏览器默认使用的是HTTP/1.1，那么在HTTP/1.1中网页缓存还是否由Expires控制呢</strong></p>
+<p>到了HTTP/1.1，Expires已经被Cache-Control替代，原因在于</p>
+<blockquote>
+<p>Expires控制缓存的原理是使用客户端的时间与服务器端返回的时间做对比，那么如果客户端与服务端的时间因为某些原因（例如时区不同；客户端和服务端有一方的时间不准确）发生误差，那么强制缓存会直接失效，这样的话强制缓存的存在则毫无意义。</p>
+</blockquote>
+<p>那么Cache-Control又是如何控制的呢？</p>
+<h2><span id="cache-control">Cache-Control</span></h2>
+<p>在HTTP/1.1中，Cache-Control是最重要的规则，主要用于控制网页缓存，主要取值为：</p>
+<ul>
+<li>public：所有内容都将被缓存（客户端和代理服务器都可缓存）</li>
+<li>private：所有内容只有客户端可以缓存，<strong>Cache-Control的默认取值</strong></li>
+<li>no-cache：客户端缓存内容，但是是否使用缓存则需要经过协商缓存来验证决定</li>
+<li>no-store：所有内容都不会被缓存，即不使用强制缓存，也不使用协商缓存</li>
+<li>max-age == xxx ： 缓存内容将在XXX秒之后失效</li>
+</ul>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5Ccache-control.png" alt=""></p>
+<p>由上面的例子可以知道:</p>
+<ul>
+<li>Expires的时间值是一个绝对值</li>
+<li>Cache-Control 为 max-age=2592000 ，是相对值</li>
+</ul>
+<p>由于Cache-Control的优先级比Expires高，那么直接根据Cache-Control的值进行缓存，意思是说2592000秒内再次发起该请求，则会直接使用缓存结果，强制缓存生效。</p>
+<blockquote>
+<p>在无法确定客户端的时间是否与服务器端的时间同步的情况下，Cache-Control相比于Expires是更好的选择，所以同时存在时，只有Cache-Control生效。</p>
+</blockquote>
+<p>了解了强制缓存的过程后，我们思考一下：</p>
+<p><strong>浏览器的缓存存放在哪里，如何在浏览器中判断强制是否生效？</strong></p>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5CdiskAndMemory.png" alt=""></p>
+<p>这里以请求掘金为例，状态码为灰色的请求代表了使用了强制缓存。请求对应的Size值则代表缓存存放的位置，分布为 <code>from memory cache</code> 和 <code>from disk cache</code>。</p>
 
                 
 
@@ -279,10 +298,10 @@ $$<br>
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/flex学习心得/" data-toggle="tooltip" data-placement="top" title="flex学习心得">&larr; Previous Post</a>
-                        </li>
                     
+                        <li class="next">
+                            <a href="/article/第一个C程序/" data-toggle="tooltip" data-placement="top" title="第一个C程序">Next Post &rarr;</a>
+                        </li>
                     
                 </ul>
 
@@ -324,7 +343,7 @@ $$<br>
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#理财" title="理财">理财</a>
+                          <a class="tag" href="/tags/#网络" title="网络">网络</a>
                         
                     </div>
                 </section>
