@@ -140,13 +140,6 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -155,6 +148,13 @@
                         
                         <li>
                             <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -243,7 +243,7 @@
 <li>js单线程事件处理器在线程空闲前不会执行下一个事件</li>
 </ul>
 <p>如上面第三点所述，如果真正理解以上例子中的<code>setTimeout()</code>，及<code>JavaScript</code>异步机制，需要理解js的事件循环和并发模型。</p>
-<h1><span id="并发模型">并发模型</span></h1>
+<h2><span id="并发模型">并发模型</span></h2>
 <p>js执行异步任务时，不需要等待响应返回，可以继续执行其他任务，而在响应返回时，会得到通知，执行回调或事件处理程序。</p>
 <p><strong>注：回调和事件处理程序本质上并无区别，只是在不同的情况下，不同的叫法。</strong></p>
 <p>js异步编程使得多个任务可以并发执行，而实现这一功能的基础是JavaScript拥有一个基于事件循环的并发模型。</p>
