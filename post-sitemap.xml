@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://vuturn.github.io/article/setTimeout%E4%B8%8EPromise/</loc>
+        <lastmod>2019-02-11T06:40:21.817Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://vuturn.github.io/article/javascript%E5%BC%82%E6%AD%A5/</loc>
         <lastmod>2019-01-31T08:14:10.441Z</lastmod>
         <changefreq>weekly</changefreq>
