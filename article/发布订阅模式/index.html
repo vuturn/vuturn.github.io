@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          发布-订阅模式 - vuturn | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://vuturn.github.io/article/发布订阅模式/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                            
+                        </div>
+                        <h1>发布-订阅模式</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by vuturn on
+                            2019-03-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">vuturn</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>发布 -订阅模式又叫观察者模式，定义对象间的一种一对多的依赖关系。当一个对象的状态发生改变时，所有依赖于它的对象都将得到通知。在js开发中，我们一般使用事件模型来替代传统的发布-订阅模式。</p>
+</blockquote>
+<h2><span id="现实中的发布-订阅模式">现实中的发布 —订阅模式</span></h2>
+<p>小明看上了新楼盘的一套房子，把电话号码留在售楼处，销售答应他，当新楼盘一推出就马上发消息给小明。小红，小强也是一样，他们把电话号码都留给了售楼处，当新楼盘推出的时候，销售就好翻开电话簿，遍历上面的电话号码，依次发送短信来通知他们。</p>
+<h2><span id="发布订阅模式的作用">发布—订阅模式的作用</span></h2>
+<p>在上面的例子中，发送短信就是一个典型的发布-订阅模式，小明，小红等都是订阅者，他们订阅了房子开售的消息。售楼处作为发布者，会给订阅者发布消息。</p>
+<p>可以发现，发布—订阅模式有着显而易见的优点。</p>
+<ul>
+<li>购房者不需要天天给售楼处打电话咨询开售时间，在合适的时间点，售楼处作为发布者会通知这些消息订阅者</li>
+<li>购房者和售楼处之间不再强耦合在一起，当有新的购房出现时，他只需把手机号码留在售楼处，售楼处不关心购房者的任何情况，售楼处的任何变动也不影响购买者。</li>
+</ul>
+<p>第一点说明，发布-订阅模式可以广泛应用于异步编程中，这是一种替代传递回调函数的方案。比如，我们可以订阅<code>ajax</code>请求的<code>error</code>和<code>success</code>事件。或者如果想在动画的每一帧完成之后做一些事情，那我们可以订阅一个事件，然后在动画的每一帧完成之后做一些事情，那我们可以订阅一个事件，然后在动画每一帧完成之后发布事件。在异步编程中，使用发布-订阅模式，我们就无需过多关注对象在异步运行期间的内部状态，而只需订阅感兴趣的事件发生点。</p>
+<p>第二点说明，发布-订阅模式可以取代对象之间的硬编码的通知机制，一个对象不用再显式地调用另外一个对象的某个接口。发布-订阅模式让两个对象松耦合地联系在一起，虽然不太清楚彼此的细节，但是不影响它们之间的相互通信。当有新的订阅者出现时，发布者的代码不需要任何修改；同样发布者需要改变时，也不会影响到之前的订阅者。只要之前约定的事件名没有变化，就可以自由的改变它们。</p>
+<h2><span id="dom事件">DOM事件</span></h2>
+<p>只要我们曾经在DOM节点上绑定过事件函数，那我们就曾经使用过发布-订阅模式。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'1'</span>);</span><br><span class="line">&#125;,<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.body.click();</span><br></pre></td></tr></table></figure>
+<p>我们订阅<code>document.body</code>上的<code>click</code>事件，当<code>body</code>节点被点击时，<code>body</code>节点便会向订阅者发布这个消息。这很像购房的例子，购房者不知道房子什么时候开售，于是他在订阅消息后等待售楼处发布消息。</p>
+<p>我们可以随意增加或者删除订阅者，增加任何订阅者都不会影响发布者代码的编写：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">document</span>.body.addEventListener(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'2'</span>);</span><br><span class="line">&#125;,<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<h2><span id="自定义事件">自定义事件</span></h2>
+<p>我们可以实现一些自定义的事件，这种依靠自定义事件完成的发布—订阅模式可以用于任何JS代码中。</p>
+<p>现在看看如何一步步实现发布—订阅模式。</p>
+<ul>
+<li>首先指定好谁当发布者（比如售楼处）</li>
+<li>然后给发布者添加一个缓存列表，用于存放回调函数以便通知订阅者（售楼处的电话簿）</li>
+<li>最后发布消息的时候，发布者会遍历这个缓存列表，依次触发里面存放的订阅者回调函数。</li>
+</ul>
+<p>另外，我们还可以向回调函数里填入一些参数，订阅者可以接收这些参数。这是很有必要的，比如售楼处可以在发给订阅者的短信里加上房子的单价、面积等信息，订阅者接收到这些信息之后可以进行各自处理。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 订阅售楼处</span></span><br><span class="line"><span class="keyword">var</span> salesOffices = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 缓存列表，存放订阅者的回调函数</span></span><br><span class="line">salesOffices.clientList = [];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加订阅者</span></span><br><span class="line">salesOffices.listen = <span class="function"><span class="keyword">function</span> (<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.clientList.push(fn);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布消息</span></span><br><span class="line">salesOffices.trigger = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, fn; fn = <span class="keyword">this</span>.clientList[i++];) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  arguments 是发布消息时带上的参数</span></span><br><span class="line">        fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>下面进行一些测试：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 小明订阅消息</span></span><br><span class="line">salesOffices.listen(<span class="function"><span class="keyword">function</span> (<span class="params">price, squareMeter</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'价格'</span> + price);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'面积'</span> + squareMeter);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 小红订阅消息</span></span><br><span class="line">salesOffices.listen(<span class="function"><span class="keyword">function</span> (<span class="params">price, squareMeter</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'价格'</span> + price);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'面积'</span> + squareMeter);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 200w， 100平方</span></span><br><span class="line">salesOffices.trigger(<span class="number">2000000</span>, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 300W，150平方</span></span><br><span class="line">salesOffices.trigger(<span class="number">3000000</span>, <span class="number">150</span>);</span><br></pre></td></tr></table></figure>
+<p>我们已经实现了一个简单的发布—订阅模式，但这里还存在一些问题。我们看到订阅者接收到了发布者发布的每一个消息,虽然小明想买100平方的房子，但是发布者把110平方的信息也推送给了小明，这对小明来说是不必要的困扰。所以我们要有必要增加一个标示<code>key</code>，让订阅者只订阅自己感兴趣的消息。改写后的代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 订阅售楼处</span></span><br><span class="line"><span class="keyword">var</span> salesOffices = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 缓存列表，存放订阅者的回调函数</span></span><br><span class="line">salesOffices.clientList = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加订阅者</span></span><br><span class="line">salesOffices.listen = <span class="function"><span class="keyword">function</span> (<span class="params">key, fn</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果没有订阅此类消息，给该类消息创建一个缓存列表</span></span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.clientList[key]) &#123;</span><br><span class="line">        <span class="keyword">this</span>.clientList[key] = [];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 订阅的消息添加缓存列表</span></span><br><span class="line">    <span class="keyword">this</span>.clientList[key].push(fn);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布消息</span></span><br><span class="line">salesOffices.trigger = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> key = <span class="built_in">Array</span>.prototype.shift.call(<span class="built_in">arguments</span>), <span class="comment">// 取出消息类型</span></span><br><span class="line">        fns = <span class="keyword">this</span>.clientList[key]; <span class="comment">// 取出该消息对应的回调函数集合</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!fns || fns.length === <span class="number">0</span>) &#123; <span class="comment">// 如果没有订阅该消息，返回</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, fn; fn = fns[i++];) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  arguments 是发布消息时带上的参数</span></span><br><span class="line">        fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 小明订阅消息</span></span><br><span class="line">salesOffices.listen(<span class="string">'squareMeter100'</span>,<span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'价格'</span> + price);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 小红订阅消息</span></span><br><span class="line">salesOffices.listen(<span class="string">'squareMeter150'</span>,<span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'价格'</span> + price);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 200w， 100平方</span></span><br><span class="line">salesOffices.trigger(<span class="string">'squareMeter100'</span>, <span class="number">2000000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//300w ,150平方</span></span><br><span class="line">salesOffices.trigger(<span class="string">'squareMeter150'</span>, <span class="number">3000000</span>);</span><br></pre></td></tr></table></figure>
+<p>现在，订阅者可以只订阅自己感兴趣的事件了。</p>
+<h2><span id="发布订阅模式的通用实现">发布—订阅模式的通用实现</span></h2>
+<p>假设小明又去另外一个售楼处去买房子，那么这段代码是否必须在另一个售楼处对象上重写一次呢，我们需要让所有的对象都拥有发布—订阅模式。</p>
+<p>我们把发布—订阅的功能提取出来，放在一个单独的对象内：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> event = &#123;</span><br><span class="line">    clientList: [],</span><br><span class="line">    listen: <span class="function"><span class="keyword">function</span> (<span class="params">key, fn</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>, clientList[key]) &#123;</span><br><span class="line">            <span class="keyword">this</span>, clientList[key] = [];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.clientList[key].push(fn);</span><br><span class="line">    &#125;,</span><br><span class="line">    trigger: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> key = <span class="built_in">Array</span>.prototype.shift().call(<span class="built_in">arguments</span>),</span><br><span class="line">            fns = <span class="keyword">this</span>.clientList[key];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!fns || fns.length === <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, fn; fn = fns[i++];) &#123;</span><br><span class="line">            fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>再定义一个<code>installEvent</code>函数，这个函数可以给所有的对象都动态安装发布—订阅功能：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> installEvent = <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> event) &#123;</span><br><span class="line">         obj[i] = event[i];</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
+<p>再来测试一下，我们给售楼处对象<code>salesOffices</code>动态增加发布—订阅功能：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> salesOffices = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">installEvent(salesOffices);</span><br><span class="line"></span><br><span class="line">salesOffices.listen(<span class="string">'squareMeter100'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'价格'</span> + price);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">salesOffices.listen(<span class="string">'squareMeter200'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'价格'</span> + price);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">salesOffices.trigger(<span class="string">'squareMeter100'</span>, <span class="number">1000000</span>);</span><br><span class="line">salesOffices.trigger(<span class="string">'squareMeter200'</span>, <span class="number">2000000</span>);</span><br></pre></td></tr></table></figure>
+<h2><span id="取消订阅的事件">取消订阅的事件</span></h2>
+<p>有时候，我们也许需要取消订阅事件的功能。比如小明突然不想买房子了，为了避免继续收到售楼处推送过来的短信，小明需要取消之前订阅的事件。现在我们给<code>event</code>对象增加<code>remove</code>方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> event = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">event.remove = <span class="function"><span class="keyword">function</span> (<span class="params">key, fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> fns = <span class="keyword">this</span>.clientList[key];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果key对应的消息没有被人订阅，则直接返回</span></span><br><span class="line">    <span class="keyword">if</span> (!fns) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果没有传入具体的回调函数，表示需要取消key对应消息的所有订阅</span></span><br><span class="line">    <span class="keyword">if</span> (!fn) &#123;</span><br><span class="line">        fns &amp;&amp; (fns.length = <span class="number">0</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 遍历订阅的回调函数列表</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> l = fns.length - <span class="number">1</span>; l &gt; <span class="number">0</span>; l--) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> _fn = fns[l];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (_fn === fn) &#123;</span><br><span class="line">                fns.splice(l, <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> salesOffices = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> installEvent = <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> event) &#123;</span><br><span class="line">        obj[i] = event[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">installEvent(salesOffices);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn1, fn2;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 小明订阅消息</span></span><br><span class="line">salesOffices.listen(<span class="string">'squareMeter88'</span>, fn1 = <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'价格='</span> + price);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 小红订阅消息</span></span><br><span class="line">salesOffices.listen(<span class="string">'squareMeter88'</span>, fn2 = <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'价格='</span> + price);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">salesOffices.remove(<span class="string">'squareMeter88'</span>, fn1);</span><br><span class="line">salesOffices.trigger(<span class="string">'squareMeter88'</span>, <span class="number">2000000</span>);</span><br></pre></td></tr></table></figure>
+<h2><span id="真实案例">真实案例</span></h2>
+<p>我们看一个真实的案例，假如我们开发了一个商城网站，网站里面有header头部，nav导航，消息列表，购物车等模块。这几个模块的渲染有一个共同的前提条件，就是必须先使用<code>ajax</code>获取用户的登录信息。比如，用户的名字和头像要放到header模块里，而这些信息都是来自用户登录后返回的信息。</p>
+<p>ajax请求什么时候能成功返回用户信息，我们是没有办法确定的。这个情节类似于售楼处的例子，小明不知道什么时候开发商的楼盘可以销售。</p>
+<p>到现在还不足以说服我们再次使用发布-订阅模式，因为异步的问题通常也可以使用回调函数来解决。更重要的一点是，我们不知道除了header头部，nav导航，消息列表，购物车之外，我们哪些模块还需要使用这些用户信息。如果它们和用户信息模块产生了强耦合，比如下面这样的形式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">login.success(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 设置header模块头像</span></span><br><span class="line">     header.setAvatar(data.avatar);</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 设置导航模块头像</span></span><br><span class="line">     nav.setAvatar(data.avatar);</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 刷新消息列表</span></span><br><span class="line">     message.refresh();</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 刷新购物车列表</span></span><br><span class="line">     cart.refresh();</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+<p>登录模块是我们负责编写的，但是我们必须了解header模块里 设置头像的方法叫setAvatar，购物车模块里刷新方法叫refresh，这种耦合性会使程序变得僵硬，header模块不能随意再改变setAvatar的方法名，它自身的名字也不能被改为header1，header2。<strong>这是针对具体实现编程的典型例子，针对具体实现编程是不被赞同的。</strong></p>
+<p>如果有一天，项目里新增一个收获地址管理的模块，这个模块本来是另外一个同事写的，那么他必须找你沟通让你新增刷新收货地址入口。于是你不得不加上这行代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">login.success(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    header.setAvatar(data.avatar);</span><br><span class="line">    nav.setAvatar(data.avatar);</span><br><span class="line">    message.refresh();</span><br><span class="line">    cart.refresh();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 刷新地址</span></span><br><span class="line">    address.refresh();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>我们就会越来越疲于应付这些突如其来的业务代码。</p>
+<p>用发布-订阅模式重写之后，对用户信息感兴趣的业务模块将自行订阅登录成功的消息事件。当登录成功之后，登录模块只需要发布登录成功的消息，而业务方接受到消息之后，就会开始各自的业务处理，登录模块并不关心业务方究竟要做什么，也不想去了解它们的内部细节。改善后的代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 登录</span></span><br><span class="line">$.ajax(<span class="string">'http://xxx.com?login'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 发布登录成功的消息</span></span><br><span class="line">    login.trigger(<span class="string">'loginSuccess'</span>, data);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> header = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    login.listen(<span class="string">'loginSuccess'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">        header.setAvatar(data);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        setAvatar: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'设置header模块的头像'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> nav = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    login.listen(<span class="string">'loginSuccess'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        nav.setAvatar(data);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        setAvatar: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'设置header模块的头像'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>我们可以随时把setAvatar方法修改为setTouXiang。如果有一天登录完成之后，有增加一个刷新收货地址列表的行为，那么只需要在收获地址模块里增加监听消息的方法即可。而这些可以让开发该模块的同事自己完成，你作为登录模块的开发者，可以不关心这些行为了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> address = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    login.listen(<span class="string">'loginSuccess'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">        address.refresh(obj);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        refresh: <span class="function"><span class="keyword">function</span> (<span class="params">avatar</span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'刷新收获地址列表'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/setTimeout与Promise/" data-toggle="tooltip" data-placement="top" title="setTimeout与Promise">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/vuturn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/超-孔-b82906108">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; vuturn 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://vuturn.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://vuturn.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
